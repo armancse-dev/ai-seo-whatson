@@ -15,11 +15,11 @@ return [
     */
 
     'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
+        'token' => env('POSTMARK_TOKEN', ''), // default to empty string
     ],
 
     'resend' => [
-        'key' => env('RESEND_KEY'),
+         'key' => env('RESEND_KEY', ''),
     ],
 
     'ses' => [

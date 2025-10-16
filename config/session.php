@@ -18,7 +18,8 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => env('SESSION_DRIVER', 'database') ?: 'database',
+ 
 
     /*
     |--------------------------------------------------------------------------
@@ -33,8 +34,9 @@ return [
     */
 
     'lifetime' => (int) env('SESSION_LIFETIME', 120),
+    'expire_on_close' => (bool) env('SESSION_EXPIRE_ON_CLOSE', false),
+    'encrypt' => (bool) env('SESSION_ENCRYPT', false),
 
-    'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -73,7 +75,7 @@ return [
     |
     */
 
-    'connection' => env('SESSION_CONNECTION'),
+    'connection' => env('SESSION_CONNECTION') ?: null,
 
     /*
     |--------------------------------------------------------------------------
@@ -101,7 +103,7 @@ return [
     |
     */
 
-    'store' => env('SESSION_STORE'),
+    'store' => env('SESSION_STORE') ?: null,
 
     /*
     |--------------------------------------------------------------------------
@@ -129,7 +131,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug((string) env('APP_NAME', 'laravel')).'-session'
+        Str::slug((string) env('APP_NAME', 'laravel')) . '-session'
     ),
 
     /*

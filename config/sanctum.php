@@ -15,12 +15,15 @@ return [
     |
     */
 
-    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
-        '%s%s',
-        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
-        Sanctum::currentApplicationUrlWithPort(),
-        // Sanctum::currentRequestHost(),
-    ))),
+    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', implode(',', [
+    'localhost',
+    'localhost:3000',
+    '127.0.0.1',
+    '127.0.0.1:8000',
+    '::1',
+    parse_url(Sanctum::currentApplicationUrlWithPort(), PHP_URL_HOST),
+]))),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -74,6 +77,12 @@ return [
     | request. You may change the middleware listed below as required.
     |
     */
+
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'allowed_origins' => ['http://localhost/whatson-ai-seo:5173'],
+    'allowed_methods' => ['*'],
+    'allowed_headers' => ['*'],
+
 
     'middleware' => [
         'authenticate_session' => Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,

@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://localhost/whatson-ai-seo'),
 
     /*
     |--------------------------------------------------------------------------
@@ -99,11 +99,10 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'previous_keys' => [
-        ...array_filter(
-            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
-        ),
-    ],
+    'previous_keys' => array_filter(
+        explode(',', (string) env('APP_PREVIOUS_KEYS', '')) // cast to string, safe
+    ),
+
 
     /*
     |--------------------------------------------------------------------------
