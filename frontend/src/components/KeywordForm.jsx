@@ -5,25 +5,37 @@ export default function KeywordForm({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const list = keywords.split(",").map(k => k.trim()).filter(Boolean);
+    const list = keywords
+      .split(",")
+      .map((k) => k.trim())
+      .filter(Boolean);
+
+    if (list.length === 0) return;
     onSubmit(list);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 bg-white rounded shadow-md w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Enter Keywords</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg"
+    >
+      <label className="block text-gray-700 font-semibold mb-2">
+        Enter Keywords (comma separated)
+      </label>
+
       <textarea
-        className="w-full border border-gray-300 rounded p-2 mb-4"
-        rows="4"
-        placeholder="Enter keywords separated by commas"
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
+        rows="4"
+        placeholder="Example: best seo tools, keyword research, ai seo..."
+        className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
       />
+
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
       >
-        Cluster Keywords
+         Generate Clusters
       </button>
     </form>
   );
