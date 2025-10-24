@@ -1,34 +1,34 @@
 <?php
-namespace App\Services;
-use GuzzleHttp\Client;
 
-class OpenAIService {
-  protected $client;
-  public function __construct(){
-    $this->client = new Client([
-      'base_uri'=>'https://api.openai.com/v1/',
-      'headers'=>[
-        'Authorization'=>'Bearer '.config('services.openai.key'),
-        'Content-Type'=>'application/json'
-      ]
+namespace App\Services;
+
+use OpenAI\Laravel\Facades\OpenAI;
+
+class OpenAIService
+{
+  public function clusterKeywords(array $keywords): array
+  {
+    $prompt = "Group the following keywords into logical topic clusters and return JSON only in this format:
+{
+  \"clusters\": [
+    {\"cluster_name\":\"Cluster A\", \"keywords\":[\"kw1\",\"kw2\"]},
+    {\"cluster_name\":\"Cluster B\", \"keywords\":[\"kw3\",\"kw4\"]}
+  ]
+}
+Keywords: " . implode(', ', $keywords);
+
+    $response = OpenAI::chat()->create([
+      'model' => 'gpt-3.5-turbo',
+      'messages' => [
+        ['role' => 'user', 'content' => $prompt],
+      ],
+      'temperature' => 0,
     ]);
-  }
-  public function clusterKeywords(array $keywords) {
-    $prompt = "Group the following keywords into topic clusters and return JSON object only in format: {\"clusters\":[{\"cluster_name\":\"..\",\"keywords\":[..]}]} Keywords: ".implode(', ',$keywords);
-    $payload = [
-      'model'=>'gpt-4o-mini', // use available model
-      'messages'=>[['role'=>'user','content'=>$prompt]],
-      'max_tokens'=>800,
-      'temperature'=>0.0
-    ];
-    $res = $this->client->post('chat/completions', ['json'=>$payload]);
-    $body = json_decode((string)$res->getBody(), true);
-    $content = $body['choices'][0]['message']['content'] ?? null;
-    if(!$content) return null;
-    $json = json_decode($content, true);
-    if($json) return $json;
-    // fallback: extract JSON substring
-    preg_match('/\{.*\}/s', $content, $m);
-    return $m[0] ? json_decode($m[0],true) : null;
+
+    $content = $response->choices[0]->message->content ?? '{}';
+
+    $data = json_decode($content, true);
+
+    return $data['clusters'] ?? [];
   }
 }

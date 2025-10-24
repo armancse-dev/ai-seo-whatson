@@ -47,7 +47,7 @@ export default function App() {
 
       {error && (
         <div className="mt-8 text-red-600 bg-red-100 px-4 py-2 rounded">
-           {error}
+          {error}
         </div>
       )}
 

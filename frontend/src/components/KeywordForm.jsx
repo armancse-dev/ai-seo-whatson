@@ -4,38 +4,39 @@ export default function KeywordForm({ onSubmit }) {
   const [keywords, setKeywords] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const list = keywords
-      .split(",")
-      .map((k) => k.trim())
-      .filter(Boolean);
+    e.preventDefault(); // 🚫 Prevents default GET reload
 
-    if (list.length === 0) return;
-    onSubmit(list);
+    const keywordArray = keywords
+      .split("\n")
+      .map((kw) => kw.trim())
+      .filter((kw) => kw.length > 0);
+
+    if (keywordArray.length === 0) {
+      alert("Please enter at least one keyword!");
+      return;
+    }
+
+    onSubmit(keywordArray);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg"
+      className="w-full max-w-md bg-white p-6 rounded-xl shadow-md"
     >
-      <label className="block text-gray-700 font-semibold mb-2">
-        Enter Keywords (comma separated)
-      </label>
-
       <textarea
+        className="w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-blue-400"
+        rows="6"
+        placeholder="Enter one keyword per line..."
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
-        rows="4"
-        placeholder="Example: best seo tools, keyword research, ai seo..."
-        className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
       />
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
       >
-         Generate Clusters
+        Generate Cluster
       </button>
     </form>
   );

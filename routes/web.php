@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\KeywordClusterController;
 
 
-Route::post('/cluster-keywords', [KeywordController::class, 'cluster']);
+Route::post('/api/cluster', [KeywordClusterController::class, 'cluster']);
 
 Route::get('/', function () {
     return view('welcome');
